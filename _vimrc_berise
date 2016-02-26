@@ -1,0 +1,634 @@
+"
+" berise _ddoott__ gmail _ddoott__ com
+" Used vim for 10+ years, but still struggle to learn it
+"
+"
+"
+" General "{{{
+set nocompatible            " no compatible with vi (multi-undo)
+
+
+" file encoding
+"set fenc=utf-8
+"set fencs=utf-8,cp949,euc-kr
+
+" encoding to show menu in GUI
+"set encoding=cp949
+"set fileencodings=cp949,utf-8,ucs-bom,latin1
+
+set enc=utf-8
+set fenc=utf-8
+"set fencs=ucs-bom,utf-8,cp949,latin1
+set nobomb
+
+" vim 7.2, windows
+"lang en
+"source $VIMRUNTIME/delmenu.vim
+"set langmenu=ko.UTF-8
+"source $VIMRUNTIME/menu.vim
+
+" vim 7.3, windows
+let $LANG = 'ko_KR.UTF-8'
+"source $VIMRUNTIME/delmenu.vim
+"source $VIMRUNTIME/menu.vim
+
+" encoding "{{{
+"  :
+" cp949 : ÇÑ±ÛÀÔ´Ï´Ù. Korean
+" utf-8 : 한글입니다. Left is a Korean in utf-8 encoding.
+if v:lang =~ "^KO"
+   set fileencodings=utf-8,cp949,ucs-bom,latin1
+"   set guifontset=-*-*-medium-r-normal--16-*-*-*-*-*-*-*
+elseif v:lang =~ "^ja_JP"
+   set fileencodings=utf-8,euc-jp
+"   set guifontset=-misc-fixed-medium-r-normal--14-*-*-*-*-*-*-*
+elseif v:lang =~ "^zh_TW"
+   set fileencodings=utf-8,big5
+"   set guifontset=-sony-fixed-medium-r-normal--16-150-75-75-c-80-iso8859-1,-taipei-fixed-medium-r-normal--16-150-75-75-c-160-big5-0
+elseif v:lang =~ "^zh_CN"
+   set fileencodings=utf-8,gb2312
+"   set guifontset=*-r-*
+endif
+if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
+   set fileencodings=utf-8,latin1
+endif
+"}}}
+
+
+
+"{{{ Encodings
+"set enc=utf-8"이 없으면 인코딩을 cp949로 인식하는데, 이 경우 ucs-2le 등으로 된 파일을 읽을 수 없다.
+"인코딩을 바꾸려고 시도해도 바꿀 수 없다면서 바뀌지 않는다.
+"set enc=utf-8"을 적어야 정상적으로 읽을 수 있다.
+
+"set enc=utf-8"을 vimrc 파일의 중간쯤에 넣어두면 gVim의 한글 메뉴가 깨져 나온다.
+"그러나 이것을 vimrc의 맨앞에 적으면 메뉴가 깨지지 않는다.
+"각종 한글 메시지들은 UTF-8 버전이 없어서 깨져 나온다.
+
+"lang en"을 넣으면 메뉴와 메시지를 영어로 바꾼다.
+"메시지만 바꿀 경우에는 vimrc의 중간에 적어도 되지만, 메뉴까지 바꾸고 싶으면 vimrc의 맨앞에 적어야 한다.
+"
+"    :source $VIMRUNTIME/delmenu.vim
+"    :set langmenu=ko.UTF-8
+"    :source $VIMRUNTIME/menu.vim
+
+"이것은 메뉴를 재설정하는 방법이다. 앞서 말한 "set enc=utf-8" 또는 "lang en"을 vimrc의 중간에 적었더라도, 이 방법을 사용하면 메뉴가 정상적으로 나오게 할 수 있다. 물론 langmenu를 en으로 하면 영어 메뉴가 나오고, ko.UTF-8로 하면 한글 메뉴가 나온다.
+"
+"추가 Vim 7.3에서 뭔가 바뀌었다.
+
+"    set enc=utf-8
+"    set fenc=utf-8
+"    set fencs=ucs-bom,utf-8,cp949,latin1
+"    set nobomb
+"    " vim 7.3, windows
+"    let $LANG = 'ko_KR.UTF-8'
+"    source $VIMRUNTIME/delmenu.vim
+"    source $VIMRUNTIME/menu.vim
+
+"이러면 제대로 된다.
+"}}}
+
+
+"set visualbell t_vb=    " no flashing
+
+
+"
+" Let's use vundle "{{{
+filetype off                " required for vundle
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+call vundle#rc()
+Plugin 'tpope/vim-fugitive'
+Plugin 'L9'
+Plugin 'ctags.vim'
+Plugin 'The-NERD-tree'
+Plugin 'taglist.vim'
+Plugin 'cscope.vim'
+Plugin 'vimwiki'
+Plugin 'perl-support.vim'
+Plugin 'Python-mode-klen'
+Plugin 'bling/vim-airline'
+Plugin 'maximize.dll'
+Plugin 'molokai'
+colorscheme molokai
+
+
+filetype plugin indent on       " required for vundle
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+
+"}}}
+
+"filetype plugin on  " perl-support
+
+"
+"  berise's vim config
+"
+set laststatus=2
+
+"let g:Powerline_symbols='fancy'
+let g:airline_powerline_fonts = 1
+"let g:airline_symbols = {}
+"let g:airline_left_sep = '\o2b80'   "use double quotes here
+"let g:airline_left_alt_sep = "\u2b81"
+"let g:airline_right_sep = "\u2b82"
+"let g:airline_right_alt_sep = "\u2b83"
+"let g:airline_symbols.branch = "\u2b60"
+"let g:airline_symbols.readonly = "\u2b64"
+"let g:airline_symbols.linenr = "\u2b61"
+
+"set guifont=Inconsolata-g:h13   "Inconsolata can not display > properly
+"set guifont=Inconsolata_for_Powerline:h13
+set guifont=Inconsolata-dz_for_Powerline:h13
+
+
+" plugin\hangeul.vimÀ» ?????Ï¿? ?Ñ±?À» ?Ô·??Ñ´?. "{{{
+" hangeul.vim ??Å©??Æ®?? ???ä¸¶Å?? ?????Ï¿?À½. (libhangul ?? ?Úµå¸?????)
+" IME ???? ?Ô·? ??????. ??. ??Æ®?? ?Ö¾??? ??.  
+function! LoadHangeulVim()
+    echomsg "LoadHangeulVim..."
+    let verbose=1
+    let hangeul_enabled=1
+    let hangeul_default_mode='3f'
+
+    so $VIM/vimfiles/plugin/hangeul.vim
+endfunction
+
+"autocmd BufNewFile,BufRead * call LoadHangeulVim()
+"}}}
+
+
+
+" swp ÆÄÀÏ »ý¼º ÇÏÁö ¾ÊÀ½ -- ¾à°£ À§ÇèÇÏÁö¸¸, ±ÍÂúÀº Á¡ ¶§¹®¿¡.
+set noswapfile
+
+"===============================================================================
+"backup
+" swapfileÀ» »ý¼ºÇÒ °æ¿ì 
+set backup
+set writebackup         " Make temp backup while overwrite file (for safety) 
+set backupdir=c:\\temp,c:\\tmp
+
+" backspace´©¸¦ °æ¿ì ÀÌÀü ÁÙ¿¡ ÀÌ¾î¼­ Ã³¸®
+set backspace=2
+set number		" numbering
+
+set incsearch " incremental search
+set scrolloff=4 "see further 4 lines
+
+
+set go=mrt          " gui option
+
+
+" Formatting "{{{
+set tabstop=4 "tab stop
+set shiftwidth=4
+
+
+" =============================================================================
+au BufNewFile,BufRead [mM]akefile,[mM]akefile*,GNUmakefile,*.mk,*.mak,*.dsp
+            \ set noexpandtab
+
+set autoindent   "auto indent
+"set cindent
+"
+" better indent in perl, c, c++, ...
+set smartindent
+"}}}
+
+" GUI(ruler, menu) "{{{
+"set rulerformat=%15(%c%V\ %p%%%)
+
+set ruler
+"hi User1 term=inverse,bold cterm=inverse,bold ctermfg=red
+set report=0
+set showcmd
+" set showfulltag       " Show full tag when autocompleting CTRL-N/P
+                        " this can show the parameters for functions 
+                        " 
+"}}}
+
+" search with case insensitive 
+set ignorecase
+
+
+
+" GUI ?Ì¸?, ???Û½? Å©?? ??Á¤
+if has("gui_running")
+    set lines=36
+    set columns=100
+    " guifont
+    "set guifont=Inconsolata-g:h13
+
+else 
+    set lines=34
+    set columns=90
+endif
+
+"}}}
+
+
+if has('multi_byte_ime')
+		highlight Cursor guibg=green guifg=NONE " ????
+		highlight CursorIM guibg=Yellow guifg=NONE " ?Ñ±?
+endif
+
+
+set tags=tags;/         " search for the tags file upward. Cool!
+set noautowrite         " Don't automatically write the file
+
+
+" =============================================================================
+" MS À©???ì¿?? ?Ñ¿? ??È¯ ??Ä¡?? ?Ç¾?À»?? insert ???å³?command ?????? ????
+" ???? ?????? ?Ô·? ?????Ï°? ?Ñ´?. ?Æ·??? ?âº????Ì´?.
+" =============================================================================
+"set noimdisable
+"set noimcmdline
+" =============================================================================
+" search??(/) ?????? ?Ô·??? ???? ?Ç°? ?Ñ´?.
+" =============================================================================
+"set iminsert=0
+"set imsearch=0
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cscope plugin config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"so $VIM/cscope_maps.vim
+
+"let g:miniBufExplMapWindowNavVim = 1 
+"let g:miniBufExplMapWindowNavArrows = 1 
+"let g:miniBufExplMapCTabSwitchBufs = 1 
+"let g:miniBufExplModSelTarget = 1 
+
+" conflict with vimwiki map  110928
+"map <leader>wt :WMToggle<cr>
+
+let g:winManagerWindowLayout = 'FileExplorer,TagsExplorer|BufExplorer'
+
+
+" =============================================================================
+" Maximoze and Resotre window Ã¢ Å©?? ?Ö´?È­ ?Ï±?
+" =============================================================================
+let w:windowmaximized = 0
+function! MaxRestoreWindow()
+  if w:windowmaximized == 1
+    let w:windowmaximized = 0
+    " restore the window
+    :simalt ~r
+  else
+    let w:windowmaximized = 1
+    " maximize the window
+    :simalt ~x
+  endif
+endfunction
+
+
+""<F12>  to Maximize / Minimize
+if has("unix")
+	" unix map
+	map <F12> :call MaxRestoreWindow()<CR>
+elseif has("win32")
+	map <F12> :call MaxRestoreWindow()<CR>
+endif
+
+
+map <F11>  :TlistToggle<CR> 
+map \n  :NERDTree<cr>
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+
+
+"""
+"  BufExplorer
+"  bufexplorer.vim
+"  http://www.vim.org/scripts/script.php?script_id=42
+"
+"  Really useful.
+"""
+"let g:bufExplorerSortBy='fullpath'   " Sort by full file path name.
+"let g:bufExplorerShowRelativePath=1  " Show relative paths.
+"let g:bufExplorerSplitOutPathName=0  " Don't split the path and file
+ " =============================================================================
+" bufexplrer ?? ?Îµ??ÈµÇ°? ?Ñ´?.
+" =============================================================================
+"let loaded_bufexplorer = 1          " bufexplrer ?? ?Îµ??ÈµÇ°? ?Ñ´?.
+
+" ?? why do I have to force to load plugin
+"so $VIM/vimfiles/plugin/bufexplorer.vim
+"map \be :BufExplorer<cr>
+
+
+
+"""
+"  csupport
+"  c.vim
+"autocmd BufNewFile,BufRead *.c  so $VIM/vimfiles/plugin/c.vim
+"autocmd BufNewFile,BufRead *.cc  so $VIM/vimfiles/plugin/c.vim
+"autocmd BufNewFile,BufRead *.cpp  so $VIM/vimfiles/plugin/c.vim
+
+
+"""
+"  snipMate
+"  snipMate.vim
+"  http://www.vim.org/scripts/script.php?script_id=2540
+"
+"  Auto-completion templates.  Really useful.
+"""
+
+"""
+"  TagList
+"  taglist.vim
+"  http://www.vim.org/scripts/script.php?script_id=273
+"
+"  Nice for those big files with lots of methods
+"""
+" Tlist ?? ???Î·? ?????? ??????.
+"let Tlist_Use_Horiz_Window = 0
+" Tlist ?? ?âº»À?30
+"let Tlist_WinWidth = 22
+let Tlist_Inc_WinWidth = 0
+" Tlist ?? Á»?? ?í¸?Ï°? Á¶Á¤?Ñ´?.
+"function! MyTlist()
+"    exe 'Tlist'
+"    if exists('g:MyTlist') && g:MyTlist == 1
+"        let g:MyTlist = 0
+""        exe ':<C-W> ='
+"    else
+"        let g:MyTlist = 1
+"        exe 'vert resize 95'
+"    endif
+"endfunction
+"nnoremap <silent> <F7> :call MyTlist()<CR>
+nnoremap <silent> <F7> :Tlist<CR>
+
+" =============================================================================
+" plugin ? taglist.vim
+" =============================================================================
+if has("win32")
+let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe' " location of ctags tool
+else
+let Tlist_Ctags_Cmd = "/usr/local/bin/ctags'
+endif
+
+"let Tlist_Sort_Type = ??name?? ?? order by
+"let Tlist_Use_Right_Window = 1 ?? split to the right side of the screen
+"let Tlist_Compart_Format = 1 ?? show small meny
+"let Tlist_Exist_OnlyWindow = 1 ?? if you are the last, kill yourself
+"let Tlist_File_Fold_Auto_Close = 0 ?? do not close tags for other files
+"let Tlist_Enable_Fold_Column = 0 ?? do not show folding tree
+
+
+"
+" Per Charles E. Campbell's comment on
+" http://www.vim.org/tips/tip.php?tip_id=97
+" Auto timestamping html
+" This pattern assumes 'magic' is set (I changed it so I can understand the
+" pattern better).
+"
+" If you have <!-- DATE --> in the html file (with or without a trailing date)
+" it will substitute the current time in.  Too cool.
+"
+au BufWritePre *.html exe "norm mz"|exe '%s/\(<!-- DATE -->\)\(.*\d\d:\d\d\)\?/\1'.strftime("%b %d, %Y %H:%M")."/e"|norm `z
+ 
+
+
+
+"let loaded_winmanager = 1           " winmanager ?? ?Îµ? ?ÈµÇ°? ?Ñ´?.
+
+" =============================================================================
+" EnhancedCommentify ?? ???? ??Á¤ help EnhancedCommentify
+" =============================================================================
+"let g:EnhCommentifyRespectIndent = 'yes'
+"let g:EnhCommentifyPretty = 'yes'
+"let g:EnhCommentifyUseBlockIndent = 'yes'
+"let g:EnhCommentifyAlignRight = 'yes'
+
+" Session management
+" restore/save session
+"source $VIM/LastSession.vim
+
+
+
+"set iminsert=0
+"set imsearch=-1
+"inoremap <ESC> <ESC>:set iminsert=0<CR>
+
+" kevin's layouts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Some layouts I used to use for serious editing
+" Lately, there are some nice plugins that make file
+" and buffer navigation much easier, so I don't use these
+" often anymore.
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"
+" Set up F9 to set up a 4 pane window with Tlist
+"
+"function SetUpFourPane()
+"  " set columns=202
+"  set columns=195
+"  set lines=85
+"  Tlist
+"  80 vnew
+"  " winpos 5 0
+"  winpos 0 0
+"endfunction
+"nnoremap <silent> <F9> :call SetUpFourPane()<CR>
+
+"
+" Set up F10 to invoke both NERDTree and TList
+"
+"function SetUpNERDTlistLayout()
+"  " nerd uses 31 columns + 1 for bar + 80 columns
+"  " set columns=112    " nerd + win size
+"  NERDTree
+"  " Project plugin behaves badly if we don't reset to the
+"  " 'main' window before toggling Tlist
+"  wincmd l
+"  TlistToggle
+"  set columns=143  " nerd + win + taglist size
+"endfunction
+"nnoremap <silent> <F10> :call SetUpNERDTlistLayout()<CR>
+ 
+
+" Omnicomplete
+"filetype plugin on
+"set ofu=syntaxcomplete#Complete
+
+" i scans all included files. so it can takes long long time.
+" remove i for now.
+"set complete-=i
+
+
+
+" omnicomplte setup
+"" 1. Install OmniCppComplete. See its doc/omnicppcomplete.txt file for information.  
+"" 2. Make a directory, for example ~/.vim/tags that will hold your ctags.  
+"" 3. Create stdc++ tags: Download and unpack the modified libstdc++ headers to ~/.vim/tags/cpp_src 
+"" 4. Run ctags:
+"" 
+"" $ cd ~/.vim/tags
+"" $ ctags -R --sort=1 --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -f cpp cpp_src
+"" 
+"" 5. Add additional tags (change to your system/likings): 
+"" $ ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -f gl /usr/include/GL/   # for OpenGL
+"" $ ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -f sdl /usr/include/SDL/ # for SDL
+"" $ ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -f qt4 /usr/include/qt4/ # for QT4
+"" 
+"" 6. Edit your ~/.vimrc and change to your system/likings: 
+"" " configure tags - add additional tags here or comment out not-used ones
+"" set tags+=~/.vim/tags/cpp
+"" set tags+=~/.vim/tags/gl
+"" set tags+=~/.vim/tags/sdl
+"" set tags+=~/.vim/tags/qt4
+"" " build tags of your own project with Ctrl-F12
+"" map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+"" 
+"" " OmniCppComplete
+"" let OmniCpp_NamespaceSearch = 1
+"" let OmniCpp_GlobalScopeSearch = 1
+"" let OmniCpp_ShowAccess = 1
+"" let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+"" let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+"" let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+"" let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+"" let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+"" " automatically open and close the popup menu / preview window
+"" au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"" set completeopt=menuone,menu,longest,preview
+
+
+
+" In order to create or update the cscope database in current directory, the following key mapping would help a bit: 
+"nmap <F11> :!find . -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hpp' > cscope.files ;
+"  \ cs kill -1<CR>:cs add cscope.out<CR>
+"
+"
+"
+" perl
+"
+" This is for perldoc.vim
+"let HOME=$VIM
+"autocmd BufNewFile,BufRead *.p? map <F1> :Perldoc<cword><CR>
+"autocmd BufNewFile,BufRead *.p? setf perl
+"autocmd BufNewFile,BufRead *.t setf perl
+"autocmd BufNewFile,BufRead *.p? let g:perldoc_program='/usr/bin/perldoc'
+"autocmd BufNewFile,BufRead *.p? source /home/codemonkey/.vim/ftplugin/perl_doc.vim
+"
+
+" vi ¿¡µðÅÍ·Î ¿­Áö ¾Ê°í euc-kr À¥¹®¼­¸¦ utf8·Î º¯°æ ÇÒ·Á°í ÇÕ´Ï´Ù. ¾î¶»°Ô ÇØ¾ß ÇÏÁÒ?
+" A) iconv ¸í·É¾î·Î °¡´ÉÇÕ´Ï´Ù.
+" iconv -f euc-kr -t utf-8 euc-kr.html --output utf8.html
+" 
+" or 
+" 
+" iconv -f euc-kr -t utf-8 euc-kr.html > utf8.html
+
+
+" key bindings
+"
+"Copy & paste to system clipboard with <Ctrl>-p and <Ctrl>y:
+
+"vmap <Leader>y "+y
+"vmap <Leader>d "+d
+"nmap <Leader>p "+p
+"nmap <Leader>P "+P
+"vmap <Leader>p "+p
+"vmap <Leader>P "+P
+"
+"
+"To highlight the current line use
+set cursorline
+"To highlight the current column use
+":set cursorcolumn
+" 
+" following line only highlight the current line in the active window
+"autocmd WinEnter * set cursorline
+"autocmd WinEnter * set cursorcolumn
+"autocmd WinLeave * set nocursorline
+"autocmd WinLeave * set nocursorcolumn
+
+
+
+
+" Python-mode
+" Activate rope
+" Keys:
+" K             Show python docs
+" <Ctrl-Space>  Rope autocomplete
+" <Ctrl-c>g     Rope goto definition
+" <Ctrl-c>d     Rope show documentation
+" <Ctrl-c>f     Rope find occurrences
+" <Leader>b     Set, unset breakpoint (g:pymode_breakpoint enabled)
+" [[            Jump on previous class or function (normal, visual, operator modes)
+" ]]            Jump on next class or function (normal, visual, operator modes)
+" [M            Jump on previous class or method (normal, visual, operator modes)
+" ]M            Jump on next class or method (normal, visual, operator modes)
+""""let g:pymode_rope = 1
+
+""""" Documentation
+""""let g:pymode_doc = 1
+""""let g:pymode_doc_key = 'K'
+
+"""""Linting
+""""let g:pymode_lint = 1
+""""let g:pymode_lint_checker = "pyflakes,pep8"
+""""" Auto check on save
+""""let g:pymode_lint_write = 1
+
+""""" Support virtualenv
+""""let g:pymode_virtualenv = 1
+
+""""" Enable breakpoints plugin
+""""let g:pymode_breakpoint = 1
+""""let g:pymode_breakpoint_bind = '<leader>b'
+
+""""" syntax highlighting
+""""let g:pymode_syntax = 1
+""""let g:pymode_syntax_all = 1
+""""let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+""""let g:pymode_syntax_space_errors = g:pymode_syntax_all
+
+""""" Don't autofold code
+""""let g:pymode_folding = 0
+
+
+" Maximize window and restoration function from
+" http://vim.wikia.com/wiki/Maximize_or_restore_window
+"
+let g:WindowMaximized = 0
+function! MaxRestoreWindow()
+  if g:WindowMaximized == 1
+    let g:WindowMaximized = 0
+    " restore the window
+    :simalt ~r
+  else
+    let g:WindowMaximized = 1
+    " maximize the window
+    :simalt ~x
+  endif
+endfunction
+
+nnoremap <silent><F12> :call MaxRestoreWindow()<CR>
