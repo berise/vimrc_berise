@@ -10,7 +10,7 @@ set nocompatible            " no compatible with vi (multi-undo)
 
 " file encoding
 "set fenc=utf-8
-"set fencs=utf-8,cp949,euc-kr
+set fencs=utf-8,cp949,euc-kr
 
 " encoding to show menu in GUI
 "set encoding=cp949
@@ -95,7 +95,7 @@ endif
 "
 " Let's use vundle "{{{
 filetype off                " required for vundle
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=$HOME/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
@@ -103,7 +103,7 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-call vundle#rc()
+"call vundle#rc()
 Plugin 'tpope/vim-fugitive'
 Plugin 'L9'
 Plugin 'ctags.vim'
@@ -114,9 +114,9 @@ Plugin 'vimwiki'
 Plugin 'perl-support.vim'
 Plugin 'Python-mode-klen'
 Plugin 'bling/vim-airline'
-Plugin 'maximize.dll'
+"Plugin 'maximize.dll'
 Plugin 'molokai'
-colorscheme molokai
+"colorscheme molokai
 
 
 filetype plugin indent on       " required for vundle
@@ -155,7 +155,11 @@ let g:airline_powerline_fonts = 1
 
 "set guifont=Inconsolata-g:h13   "Inconsolata can not display > properly
 "set guifont=Inconsolata_for_Powerline:h13
-set guifont=Inconsolata-dz_for_Powerline:h13
+if has("win32")
+set guifont=Inconsolata-dz_for_Powerline:c13
+elseif has("unix")
+set guifont=Inconsolata-dz\ for\ Powerline\ Medium\ 12
+endif
 
 
 " plugin\hangeul.vimÀ» ?????Ï¿? ?Ñ±?À» ?Ô·??Ñ´?. "{{{
@@ -183,7 +187,9 @@ set noswapfile
 " swapfileÀ» »ý¼ºÇÒ °æ¿ì 
 set backup
 set writebackup         " Make temp backup while overwrite file (for safety) 
+if has("win32")
 set backupdir=c:\\temp,c:\\tmp
+endif
 
 " backspace´©¸¦ °æ¿ì ÀÌÀü ÁÙ¿¡ ÀÌ¾î¼­ Ã³¸®
 set backspace=2
@@ -388,7 +394,7 @@ nnoremap <silent> <F7> :Tlist<CR>
 if has("win32")
 let Tlist_Ctags_Cmd = $VIM.'/vimfiles/ctags.exe' " location of ctags tool
 else
-let Tlist_Ctags_Cmd = "/usr/local/bin/ctags'
+"let Tlist_Ctags_Cmd = "/usr/local/bin/ctags'
 endif
 
 "let Tlist_Sort_Type = ??name?? ?? order by
